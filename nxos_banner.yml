@@ -7,7 +7,7 @@
 
   collections:
     - cisco.nxos
-    
+
   tasks:
     - name: configure the exec banner
       cisco.nxos.nxos_banner:

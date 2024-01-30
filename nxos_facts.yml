@@ -7,7 +7,7 @@
 
   collections:
     - cisco.nxos
-    
+
   tasks:
     - name: Gather all legacy facts
       cisco.nxos.nxos_facts:

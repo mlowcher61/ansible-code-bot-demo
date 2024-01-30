@@ -1,23 +1,23 @@
 ---
 - hosts: all
   #connection: local
-  gather_facts: no
+  gather_facts: false
   vars:
-    ansible_connection: 'network_cli'
-    ansible_network_os: 'ios'
+    ansible_connection: network_cli
+    ansible_network_os: ios
     network_backup_dir: "{{ backup_path }}"
     network_backup_file: "{{ network_backup_dir }}/{{ inventory_hostname }}.txt"
 
   tasks:
-  - name: diff the change/merged config against the running config
-    cisco.ios.ios_config:
-      diff_against: running
-      src: "{{network_backup_file}}"
-    register: test_diff
+    - name: diff the change/merged config against the running config
+      cisco.ios.ios_config:
+        diff_against: running
+        src: "{{network_backup_file}}"
+      register: test_diff
 
-  - name: debug the test_diff
-    debug:
-      var: test_diff
+    - name: debug the test_diff
+      debug:
+        var: test_diff
 
   # - name: Take config we are merging and sets it to a variable called *before*
   #   set_fact: before="{{ test_diff['diff']['before'].split('\n')}}"

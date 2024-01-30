@@ -8,11 +8,11 @@
     - name: Determine that both AAP and Machine credentials are set
       ansible.builtin.assert:
         that:
-          - "lookup('env', 'CONTROLLER_USERNAME') !=''"
+          - lookup('env', 'CONTROLLER_USERNAME') !=''
         fail_msg:
-          - "This Job requires two credentials"
-          - "Red Hat Ansible Automation Platform credential is not set"
-          - "Please assign correct credentials to the Job Template"
+          - This Job requires two credentials
+          - Red Hat Ansible Automation Platform credential is not set
+          - Please assign correct credentials to the Job Template
 
     - name: Determine that both AAP and Machine credentials are set
       ansible.builtin.debug:
@@ -23,7 +23,7 @@
 
     - name: Backup configuration
       ansible.builtin.include_role:
-        name: "../roles/backup"
+        name: ../roles/backup
       when: ansible_network_os is defined
 
     - name: Create time stamp for play
@@ -45,7 +45,7 @@
     - name: Save configuration to backup server
       ansible.builtin.copy:
         src: "{{ config_output.backup_path }}"
-        dest: "/backup/{{ hostvars['backup-server'].datetime }}/"
+        dest: /backup/{{ hostvars['backup-server'].datetime }}/
         mode: "644"
       when: config_output is defined
       become: true
@@ -63,8 +63,8 @@
 
     - name: Create restore job template
       ansible.controller.job_template:
-        name: "Network Automation - Restore"
-        job_type: "run"
+        name: Network Automation - Restore
+        job_type: run
         inventory: "{{ restore_inventory | default('Network Inventory') }}"
         project: "{{ restore_project | default('Network Toolkit') }}"
         playbook: "{{ restores_playbook | default('playbooks/network_restore.yml') }}"
@@ -72,5 +72,5 @@
         survey_enabled: true
         survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/backup.j2') }}"
         validate_certs: false
-        execution_environment: "Default execution environment"
+        execution_environment: Default execution environment
       run_once: true
