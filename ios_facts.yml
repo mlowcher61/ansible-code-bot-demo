@@ -1,0 +1,23 @@
+---
+- name: Connecting to routers
+  hosts: cisco
+  connection: local
+  gather_facts: false
+    
+  tasks:
+    - name: Gather all legacy facts
+      cisco.ios.ios_facts:
+        gather_subset: all
+      register: all_facts
+
+    - name: Display Version
+      debug:
+        msg: "The IOS version is {{ ansible_net_version }}"
+
+    - name: Display serial number
+      debug:
+        msg: "The serial number is {{ ansible_net_serialnum }}"
+
+    - name: Display all facts
+      debug:
+        var: all_facts
