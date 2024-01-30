@@ -1,0 +1,20 @@
+---
+- name: Connecting to routers
+  hosts: cisco
+  connection: network_cli
+  #connection: httpapi - NXOS supports network_cli and/or httpapi connection plug-ins. If one doesn't work, try the other.
+  gather_facts: false
+
+  collections:
+    - cisco.nxos
+    
+  tasks:
+    - name: configure the exec banner
+      cisco.nxos.nxos_banner:
+        banner: exec
+        text: |
+          this is my exec banner
+          that contains a multiline
+          string
+        state: present
+# https://console.redhat.com/ansible/automation-hub/repo/published/cisco/nxos/content/module/nxos_banner/

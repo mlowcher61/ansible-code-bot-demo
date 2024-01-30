@@ -1,0 +1,17 @@
+---
+- name: Connecting to routers
+  hosts: cisco
+  connection: network_cli
+  gather_facts: false
+
+  collections:
+    - cisco.ios
+    
+  tasks:
+    - name: Merge provided configuration with device configuration
+      cisco.ios.ios_vlans:
+        config:
+          - name: Vlan_10
+            vlan_id: 10
+            mtu: 1000
+        state: overridden
