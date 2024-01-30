@@ -1,20 +1,20 @@
 ---
 - hosts: all
   connection: local
-  gather_facts: no
+  gather_facts: false
   vars:
-    ansible_connection: 'network_cli'
-    ansible_network_os: 'ios'
+    ansible_connection: network_cli
+    ansible_network_os: ios
     network_backup_dir: "{{ backup_path }}"
     network_backup_file: "{{ network_backup_dir }}/{{ inventory_hostname }}.txt"
 
   tasks:
-  - name: Checking differences Between {{network_backup_file}} and current running on {{inventory_hostname}}
-    ios_config:
-      diff_against: intended
-      intended_config: "{{ lookup('file', '{{network_backup_file}}') }}"
-    register: config_diff
+    - name: Checking differences Between {{network_backup_file}} and current running on {{inventory_hostname}}
+      ios_config:
+        diff_against: intended
+        intended_config: "{{ lookup('file', '{{network_backup_file}}') }}"
+      register: config_diff
 
-  - name: The difference are
-    debug:
-      var: config_diff
+    - name: The difference are
+      debug:
+        var: config_diff
