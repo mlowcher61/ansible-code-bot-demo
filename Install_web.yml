@@ -1,0 +1,31 @@
+---
+hosts: webservers
+gather_facts: False
+
+tasks:
+  - name: Install Apache
+    ansible.builtin.package:
+      name: httpd
+      state: present
+- name: Open firewall ports for http and https 
+      ansible.posix.firewalld:
+        port: "{{ item }}"
+        permanent: true
+        state: enabled
+        immediate: true
+      loop:
+        - 80
+        - 443
+    
+- name: Add web content 
+  ansible.builtin.copy:
+    src: /var/www/html/
+    dest: /var/www/html/
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Restart web service 
+  ansible.builtin.service:
+    name: httpd
+    state: restart
